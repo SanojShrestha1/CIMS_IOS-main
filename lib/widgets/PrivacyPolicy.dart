@@ -35,6 +35,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               'Welcome to the Cosmos College of Management and Technology App provided by Cosmos IT Solution PVT.LTD.("we," "us," or "our"). This Privacy Policy is designed to help you understand how we collect, use, disclose, and safeguard your personal information. By downloading, installing, or using the App, you agree to the practices described in this Privacy Policy. If you do not agree to this Privacy Policy, please do not use the App.',
             ),
@@ -46,6 +47,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               'Personal Information:',
               style: TextStyle(
@@ -77,6 +79,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               'We use the collected information for various purposes, including but not limited to:',
               ),
@@ -105,6 +108,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               "-We prioritize the security of your personal information. While we strive to use commercially acceptable means to protect your data, we cannot guarantee absolute security. It's important to keep your account credentials confidential and notify us of any unauthorized access."
               ),
@@ -117,6 +121,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               "We do not sell, trade, or rent your personal information to third parties. However, we may disclose your information in the following circumstances:"
               ),
@@ -139,6 +144,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
             Text(
               "You have the right to:"
               ),
@@ -156,6 +162,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
               Text(
                 'We may update our Privacy Policy from time to time. The most current version will be posted on this page with the effective date.'
                 ),
@@ -169,6 +176,7 @@ class PrivacyPolicy extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 3.0),
               Text(
                 'If you have any questions or concerns about our Privacy Policy, please contact us at :'
                 ),
@@ -190,8 +198,3 @@ class PrivacyPolicy extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: PrivacyPolicy(),
-  ));
-}
