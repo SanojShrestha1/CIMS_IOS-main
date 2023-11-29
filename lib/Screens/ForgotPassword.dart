@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   @override
@@ -34,6 +35,12 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
 
   bool _canRequestResetCode = true;
 
+  String _encryptPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
   Future<void> sendResetCode() async {
     final email = _emailController.text;
 
@@ -60,7 +67,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
             return AlertDialog(
               title: Text("Code Request Blocked"),
               content: Text(
-                "You can request a reset code only after 10 minutes.",
+                "You can request a reset code only after 12hours.",
               ),
               actions: [
                 TextButton(
@@ -78,12 +85,12 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.1.75:3000/user'), 
+          Uri.parse('http://192.168.254.13:3000/user'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
-            'user_email': email, 
+            'user_email': email,
           }),
         );
 
@@ -144,7 +151,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
               return AlertDialog(
                 title: Text("Error"),
                 content: Text(
-                  "An error occurred while sending the reset code. Please try again later.",
+                  "An error occurred while sending the reset code. Please check if the reset code was sent to your email and try again later after 12 hours.",
                 ),
                 actions: [
                   TextButton(
@@ -179,15 +186,17 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
     }
 
     try {
+      final encryptedPassword = _encryptPassword(newPassword);
+
       final response = await http.post(
-        Uri.parse('http://192.168.1.75:3000/user/change-password'), 
+        Uri.parse('http://192.168.254.13:3000/user/change-password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
           'user_email': email,
-          'reset_code': resetCode, 
-          'new_password': newPassword, 
+          'reset_code': resetCode,
+          'new_password': encryptedPassword, // Encrypt the password
         }),
       );
 
@@ -213,12 +222,12 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
         );
 
         await http.post(
-          Uri.parse('http://192.168.1.75:3000/user/success-email'),
+          Uri.parse('http://192.168.254.13:3000/user/success-email'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
-            'user_email': email, 
+            'user_email': email,
           }),
         );
       } else {
@@ -309,7 +318,8 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                errorText: _resetCodeIsEmpty ? 'Please insert reset code' : null,
+                errorText:
+                    _resetCodeIsEmpty ? 'Please insert reset code' : null,
               ),
             ),
             SizedBox(height: 18),
@@ -325,7 +335,8 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                errorText: _newPasswordIsEmpty ? 'Please insert new password' : null,
+                errorText:
+                    _newPasswordIsEmpty ? 'Please insert new password' : null,
               ),
             ),
             SizedBox(height: 18),
@@ -360,7 +371,8 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
   }
 
   bool _isValidEmail(String email) {
-    final emailRegex = RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     return emailRegex.hasMatch(email);
   }
 }
